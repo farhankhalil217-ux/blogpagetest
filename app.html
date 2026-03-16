@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NVMCWL5N3P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NVMCWL5N3P');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="google-site-verification" content="Q_6z_6duTmKCQ-d_6rhoQFveHEWoKHrdBA6faBt6sj4" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://solarmetrix.app/" />
+<meta property="og:title" content="Solar Metrix | Advanced Solar Energy Yield Simulator" />
+<meta property="og:description" content="Simulate precise solar energy production using AI & 25-year climate data. Get accurate yield estimates and financial ROI reports instantly." />
+<meta property="og:image" content="https://solarmetrix.app/preview-card.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://solarmetrix.app/preview-card.png" />
+  <!-- EXTERNAL LIBRARIES -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+ 
+  <style>
+    :root {
+      --bg-slate: #020617;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-slate);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08), transparent 25%);
+      color: #f8fafc;
+      min-height: 100vh;
+      -webkit-user-select: none; 
+      -ms-user-select: none; 
+      user-select: none;
+      overflow-x: hidden;
+    }
+
+    .glass-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .data-font { font-family: 'JetBrains Mono', monospace; }
+
+    .input-field {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid #334155;
+      color: white;
+      transition: all 0.2s;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+    }
+
+    .loading-pulse {
+      animation: pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .5; }
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: 99999; 
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #0f172a;
+      border: 1px solid #38bdf8;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+    }
+    
+    /* Toggle Switch */
+    .toggle-checkbox:checked {
+        right: 0;
+        border-color: #10b981;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+        background-color: #10b981;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main App Container */
+    #main-app-container {
+      transition: opacity 1s ease-out;
+    }
+  </style>
+</head>
+<body class="p-4 lg:p-8" oncontextmenu="return false;">
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="main-app-container" class="hidden opacity-0">
+    <div class="max-w-7xl mx-auto space-y-6">
+    
+        <!-- HEADER -->
+        <header class="flex flex-col md:flex-row justify-between items-center gap-4 py-4 border-b border-slate-800/60">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20">
+            <i data-lucide="sun" class="w-7 h-7 text-sky-400"></i>
+            </div>
+            <div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">SOLAR <span class="text-sky-400 font-light">METRIX</span> PRO</h1>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">AI-Powered 25-Year Climate Engine</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="flex bg-slate-900 border border-slate-800 rounded-lg p-1 mr-2">
+                <button onclick="saveProject()" class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 transition-colors" title="Save Project"><i data-lucide="save" class="w-4 h-4"></i></button>
+                <button onclick="loadProject()" class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-sky-400 transition-colors" title="Load Project"><i data-lucide="folder-open" class="w-4 h-4"></i></button>
+            </div>
+
+            <div id="license-badge" class="hidden px-3 py-1.5 rounded-lg border text-xs font-bold transition-colors"></div>
+            
+            <div id="license-expiry" class="hidden px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-[10px] font-bold text-slate-400 font-mono flex items-center gap-2">
+              <i data-lucide="calendar-clock" class="w-3 h-3 text-slate-500"></i>
+              <span id="expiry-text">--</span>
+            </div>
+
+            <button onclick="toggleBranding()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-400 transition-colors border border-slate-700" title="Company Branding (Pro Only)">
+                <i data-lucide="briefcase" class="w-4 h-4"></i>
+                <span class="hidden md:inline">Branding</span>
+            </button>
+
+            <button onclick="toggleInfo()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-400 transition-colors border border-slate-700">
+                <i data-lucide="info" class="w-4 h-4"></i>
+                <span>About</span>
+            </button>
+            
+            <button onclick="logout()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-900/30 text-xs font-bold text-rose-400 border border-slate-700 hover:border-rose-800 transition-colors" title="Reset License & Trial">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+
+            <div id="status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs font-medium text-slate-400">
+            <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+            <span>System Idle</span>
+            </div>
+        </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- CONTROLS SIDEBAR -->
+        <aside class="lg:col-span-4 space-y-6">
+            <div class="glass-panel p-6 space-y-5">
+            <div class="flex items-center gap-2 text-sky-400 mb-2">
+                <i data-lucide="sliders" class="w-4 h-4"></i>
+                <h2 class="text-xs font-bold uppercase tracking-widest">System Configuration</h2>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">System Capacity (kWp)</label>
+                <div class="relative">
+                <input type="number" id="sys-capacity" value="10" class="input-field w-full rounded-lg p-3 text-lg font-bold data-font" placeholder="10">
+                <span class="absolute right-4 top-4 text-xs text-slate-600 font-bold">DC</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+                <span class="text-[10px] font-bold text-slate-400 uppercase">Include Financial Analysis?</span>
+                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="toggle" id="enable-financials" checked onchange="toggleFinancials()" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-700 transition-all duration-300 left-0"/>
+                    <label for="enable-financials" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-700 cursor-pointer"></label>
+                </div>
+            </div>
+
+            <div id="financial-inputs-container" class="p-4 rounded-xl bg-emerald-950/20 border border-emerald-900/50 space-y-4 transition-all duration-300">
+                <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="coins" class="w-3 h-3 text-emerald-500"></i>
+                        <h3 class="text-[10px] font-bold text-emerald-500 uppercase">Investment Parameters</h3>
+                    </div>
+                </div>
+
+                <div>
+                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5">Currency</label>
+                <select id="fin-currency" class="input-field w-full rounded-lg p-2 text-xs font-bold text-emerald-300">
+                    <option value="USD">USD </option>
+                    <option value="PKR">PKR </option>
+                    <option value="EUR">EUR </option>
+                    <option value="GBP">GBP </option>
+                    <option value="INR">INR </option>
+                    <option value="AED">AED </option>
+                </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Grid Tariff Rate</label>
+                    <div class="relative">
+                        <input type="number" id="fin-rate" value="0.28" step="0.01" class="input-field w-full rounded-lg p-2 text-sm font-bold data-font text-emerald-300">
+                        <span class="absolute right-2 top-2.5 text-[9px] text-slate-500 font-bold">/unit</span>
+                    </div>
+                    </div>
+                    <div>
+                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Total Sys Cost</label>
+                    <input type="number" id="fin-cost" value="12000" class="input-field w-full rounded-lg p-2 text-sm font-bold data-font text-emerald-300">
+                    </div>
+                </div>
+                
+                <p class="text-[9px] text-slate-500 italic">ROI models 3.5% energy inflation & 0.55% annual degradation.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Tilt Angle (°)</label>
+                <input type="number" id="sys-tilt" class="input-field w-full rounded-lg p-2.5 text-sm font-bold data-font" placeholder="Auto">
+                </div>
+                <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Azimuth (180=S)</label>
+                <input type="number" id="sys-azimuth" value="180" class="input-field w-full rounded-lg p-2.5 text-sm font-bold data-font">
+                </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-[10px] font-bold text-slate-500 uppercase">Advanced Loss Parameters</h3>
+                    <button onclick="toggleTechnicalHelp()" class="text-[9px] text-sky-500 hover:text-sky-300 underline">What is this?</button>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between mb-1">
+                        <label class="text-[10px] font-bold text-slate-400">System Losses (%)</label>
+                        <span class="text-[9px] text-slate-600">Static Sub-components</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Inverter</label>
+                            <input type="number" id="loss-inv" value="4.0" step="0.1" class="input-field w-full rounded-lg p-1.5 text-xs font-bold text-slate-300">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">AC/DC Wiring</label>
+                            <input type="number" id="loss-wire" value="1.5" step="0.1" class="input-field w-full rounded-lg p-1.5 text-xs font-bold text-slate-300">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Mismatch/Shade</label>
+                            <input type="number" id="loss-mismatch" value="2.0" step="0.1" class="input-field w-full rounded-lg p-1.5 text-xs font-bold text-slate-300">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">LID & Avail.</label>
+                            <input type="number" id="loss-lid" value="2.0" step="0.1" class="input-field w-full rounded-lg p-1.5 text-xs font-bold text-slate-300">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Temp Coeff</label>
+                    <div class="relative">
+                        <input type="number" id="coeff-temp" value="-0.35" step="0.01" class="input-field w-full rounded-lg p-2 text-xs font-bold">
+                        <span class="absolute right-2 top-2 text-[9px] text-slate-600">%/°C</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">NOCT</label>
+                    <div class="relative">
+                        <input type="number" id="val-noct" value="45" class="input-field w-full rounded-lg p-2 text-xs font-bold">
+                        <span class="absolute right-2 top-2 text-[9px] text-slate-600">°C</span>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="flex items-start gap-2 text-[10px] text-sky-400/80 bg-sky-900/10 p-2 rounded">
+                <i data-lucide="zap" class="w-3 h-3 mt-0.5"></i>
+                <p>AI Engine calculates hourly Heat & Soiling losses based on 25+ years of data.</p>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800">
+                <div class="flex gap-2 mb-3">
+                    <button onclick="setMode('auto')" id="btn-auto" class="flex-1 py-2 rounded-lg text-xs font-bold bg-sky-600 text-white transition-colors">Auto GPS</button>
+                    <button onclick="setMode('manual')" id="btn-manual" class="flex-1 py-2 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition-colors">Manual Coords</button>
+                </div>
+                <div id="manual-coords" class="hidden grid grid-cols-2 gap-3 fade-in">
+                <input type="number" id="in-lat" placeholder="Lat" class="input-field rounded-lg p-2 text-sm">
+                <input type="number" id="in-lon" placeholder="Lon" class="input-field rounded-lg p-2 text-sm">
+                </div>
+            </div>
+
+           <button 
+    id="simBtn" 
+    onclick="runSimulation()" 
+    class="btn-primary w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed">
+    <i data-lucide="cpu" class="w-5 h-5 group-hover:rotate-90 transition-transform"></i>
+    <span id="btnText">INITIATE 25-YEAR ANALYSIS</span>
+</button>
+              <div class="mt-3 p-3 rounded-lg bg-amber-900/10 border border-amber-900/30 text-center">
+    <p class="text-[10px] text-amber-500/80 leading-relaxed font-medium">
+        ⚠️ <span class="text-amber-400 font-bold">Traffic Limit:</span> Please wait <strong>60 seconds</strong> after every 3 simulations to allow the Physics Engine to cool down.
+    </p>
+    <p class="text-[9px] text-slate-500 mt-1">
+        If you see an error or the simulation stalls, simply <span class="text-sky-400 font-bold cursor-pointer underline decoration-dotted" onclick="window.location.reload()">Refresh the Page</span> to reset the connection.
+    </p>
+</div>
+            
+            <div class="flex justify-center">
+                <button onclick="toggleGuidance()" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/30 hover:bg-slate-800 text-[10px] font-bold text-slate-400 hover:text-sky-400 transition-colors flex items-center justify-center gap-1.5">
+                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                <span>Parameter Guidance</span>
+                </button>
+            </div>
+
+            </div>
+        </aside>
+
+        <!-- RESULTS DASHBOARD -->
+        <main class="lg:col-span-8 space-y-6">
+            
+            <div id="state-empty" class="h-full min-h-[500px] flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-slate-800 rounded-2xl">
+            <div class="w-24 h-24 bg-slate-900 rounded-full flex items-center justify-center mb-6 shadow-2xl shadow-sky-900/20">
+                <i data-lucide="globe-2" class="w-12 h-12 text-slate-700"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-400 uppercase tracking-widest">Global AI Climate Audit</h3>
+            <p class="text-slate-600 max-w-md mt-2 text-sm">Enter location to fetch historical weather data (2000 - Present). The engine uses AI physics to calculate P50/P90 probabilities and optimal yield.</p>
+            </div>
+
+            <div id="state-loading" class="hidden h-full min-h-[500px] flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 border-4 border-sky-500/30 border-t-sky-500 rounded-full animate-spin"></div>
+                <p id="loading-text" class="text-sm font-bold text-sky-400 uppercase tracking-widest loading-pulse">Fetching 25-Year Dataset...</p>
+            </div>
+
+            <div id="state-results" class="hidden space-y-6 fade-in">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-panel p-5 border-l-4 border-l-emerald-500 relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="bar-chart-3" class="w-16 h-16 text-emerald-400"></i>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">P50 Expected Yield</p>
+                    <div class="flex items-baseline gap-2">
+                    <span id="res-p50" class="text-3xl font-bold text-white data-font">--</span>
+                    <span class="text-xs text-slate-400 font-bold">kWh/yr</span>
+                    </div>
+                    <div class="mt-2 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 inline-block px-2 py-1 rounded">
+                    Most Likely Scenario
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 border-l-4 border-l-amber-500 relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="shield-check" class="w-16 h-16 text-amber-400"></i>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">P90 Bankable Yield</p>
+                    <div class="flex items-baseline gap-2">
+                    <span id="res-p90" class="text-3xl font-bold text-white data-font">--</span>
+                    <span class="text-xs text-slate-400 font-bold">kWh/yr</span>
+                    </div>
+                    <div class="mt-2 text-[10px] text-amber-400 font-bold bg-amber-900/20 inline-block px-2 py-1 rounded">
+                    Conservative (90% Conf.)
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 border-l-4 border-l-sky-500 relative overflow-hidden">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">System Efficiency</p>
+                    <div class="flex items-baseline gap-2">
+                    <span id="res-pr" class="text-3xl font-bold text-white data-font">--</span>
+                    <span class="text-xs text-slate-400 font-bold">% PR</span>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 text-[10px] border-t border-slate-800 pt-2">
+                    <span class="text-slate-500">Spec Yield:</span>
+                    <span id="res-spec" class="text-sky-300 font-bold data-font">--</span>
+                    </div>
+                    <div class="mt-1 text-[9px] text-slate-500 flex justify-between">
+                        <span>Avg Total Loss:</span>
+                        <span id="res-total-loss" class="text-rose-400 font-bold">--%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results-financial-panel" class="glass-panel p-4 border border-emerald-900/30 bg-emerald-950/10 transition-all">
+                <div class="flex items-center gap-2 mb-3 pb-3 border-b border-emerald-900/30">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Financial Return Statement</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-900/30 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                            <i data-lucide="percent" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p id="lbl-roi" class="text-[10px] text-slate-400 uppercase font-bold">Return on Investment</p>
+                            <p id="fin-roi" class="text-xl font-bold text-white data-font">--%</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 border-l border-emerald-900/30 pl-6">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-900/30 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                            <i data-lucide="hourglass" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p id="lbl-payback" class="text-[10px] text-slate-400 uppercase font-bold">Payback Period</p>
+                            <p id="fin-payback" class="text-xl font-bold text-white data-font">-- Yrs</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 border-l border-emerald-900/30 pl-6">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-900/30 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                            <i data-lucide="piggy-bank" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p id="lbl-savings" class="text-[10px] text-slate-400 uppercase font-bold">25-Year Net Savings</p>
+                            <p id="fin-savings" class="text-lg md:text-xl font-bold text-emerald-400 data-font truncate max-w-[150px] md:max-w-none">--</p>
+                            <p id="fin-capex-note" class="text-[8px] text-emerald-600 mt-0.5 font-bold uppercase"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-slate-800 rounded-lg">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-sky-400"></i>
+                    </div>
+                    <div>
+                    <p class="font-bold text-white" id="loc-name">Unknown</p>
+                    <p class="text-slate-500" id="loc-coords">-- , --</p>
+                    </div>
+                </div>
+                <div class="h-8 w-px bg-slate-800 hidden md:block"></div>
+                <div class="flex items-center gap-6">
+                    <div>
+                    <p class="text-[9px] uppercase font-bold text-slate-500">Climate Volatility (σ)</p>
+                    <p id="clim-var" class="font-bold text-amber-400 data-font">--%</p>
+                    </div>
+                    <div>
+                    <p class="text-[9px] uppercase font-bold text-slate-500">Avg Annual GHI</p>
+                    <p id="clim-ghi" class="font-bold text-white data-font">-- kWh/m²</p>
+                    </div>
+                    <div>
+                    <p class="text-[9px] uppercase font-bold text-slate-500">Rec. Tilt</p>
+                    <p id="rec-tilt" class="font-bold text-emerald-400 data-font">--°</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel overflow-hidden">
+                <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Monthly Physics Breakdown</h3>
+                    <button onclick="exportReport()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-white transition-colors">
+                    <i data-lucide="download" class="w-3 h-3"></i> PDF Report
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                    <tr class="bg-slate-950 text-[9px] uppercase font-bold text-slate-500 tracking-wider border-b border-slate-800">
+                        <th class="px-4 py-3">Month</th>
+                        <th class="px-4 py-3">POA <span class="text-[8px] opacity-50">(kWh/m²)</span></th>
+                        <th class="px-4 py-3">Avg Temp <span class="text-[8px] opacity-50">(°C)</span></th>
+                        <th class="px-4 py-3 text-amber-400">Temp Loss</th>
+                        <th class="px-4 py-3 text-amber-400">Soiling</th>
+                        <th class="px-4 py-3">Total Energy <span class="text-[8px] opacity-50">(kWh)</span></th>
+                        <th class="px-4 py-3">CUF %</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body" class="text-xs data-font text-slate-300 divide-y divide-slate-800/50"></tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </main>
+        </div>
+    </div>
+  </div>
+
+  <!-- ABOUT MODAL -->
+  <div id="modal-info" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-start mb-4 border-b border-slate-800 pb-2">
+            <div>
+                <h2 class="text-xl font-bold text-white">About Solar Metrix Pro</h2>
+                <p class="text-xs text-sky-400 uppercase tracking-widest mt-1">Platform Architecture & Data Sources</p>
+            </div>
+            <button onclick="toggleInfo()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
+            <p><strong>Solar Metrix Pro</strong> is an advanced yield simulation engine. This tool is <strong>trained on 25+ years of historical data</strong> (2000-Present) and implements <strong>AI-based Weather physics</strong> to accurately predict Plane of Array (POA) irradiance and Energy generation.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                <div class="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+                    <h4 class="text-sky-400 font-bold mb-1">AI Physics Engine</h4>
+                    <p class="text-xs text-slate-400">Dynamically models heat & soiling losses hour-by-hour using trained historical patterns.</p>
+                </div>
+                <div class="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+                    <h4 class="text-sky-400 font-bold mb-1">25+ Year Dataset</h4>
+                    <p class="text-xs text-slate-400">Audit covers 2000 to the previous year, ensuring robust P50/P90 probability calculations.</p>
+                </div>
+            </div>
+
+            <div class="bg-amber-900/20 border border-amber-900/50 p-3 rounded-lg">
+                <p class="text-xs text-amber-200">
+                    <strong class="uppercase text-amber-400">Important Note on Financials:</strong><br>
+                    The financial module uses a simplified yield-based model: <strong>ROI = (Total Energy Yield × Grid Rate) / System Cost</strong>. It assumes all generated energy is valuable (either self-consumed or exported).
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- BRANDING MODAL -->
+  <div id="modal-branding" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-start mb-4 border-b border-slate-800 pb-2">
+            <div>
+                <h2 class="text-xl font-bold text-white">Company Branding</h2>
+                <p class="text-xs text-emerald-400 uppercase tracking-widest mt-1">Pro Feature: Customize Your Reports</p>
+            </div>
+            <button onclick="toggleBranding()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="space-y-6">
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-800 space-y-4">
+                 <div><label class="block text-xs font-bold text-slate-400 uppercase mb-2">Company Name</label><input type="text" id="brand-name" class="input-field w-full rounded-lg p-3 text-sm font-bold"></div>
+                 <div><label class="block text-xs font-bold text-slate-400 uppercase mb-2">Company Logo</label><input type="file" id="brand-logo-file" accept="image/*" class="text-slate-400 text-xs" onchange="handleLogoUpload(this)"></div>
+                 <div id="logo-preview-container" class="hidden p-4 bg-white rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300"><img id="logo-preview" src="" alt="Logo Preview" class="max-h-20 object-contain"></div>
+            </div>
+            <div class="flex gap-3"><button onclick="saveBrandingSettings()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg">Save Branding</button><button onclick="clearBranding()" class="px-4 py-3 rounded-lg border border-rose-900/50 text-rose-400">Reset</button></div>
+        </div>
+    </div>
+  </div>
+
+  <!-- TECHNICAL HELP MODAL -->
+  <div id="modal-tech" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-start mb-4 border-b border-slate-800 pb-2">
+            <div>
+                <h2 class="text-xl font-bold text-white">Technical Parameters Guide</h2>
+                <p class="text-xs text-amber-400 uppercase tracking-widest mt-1">Input Configuration Help</p>
+            </div>
+            <button onclick="toggleTechnicalHelp()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="space-y-5 text-sm text-slate-300">
+            <div class="space-y-2">
+                <h3 class="text-white font-bold flex items-center gap-2"><i data-lucide="thermometer" class="w-4 h-4 text-rose-400"></i> Temperature Coefficient (Pmax)</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">This value determines how much efficiency your solar panel <strong>loses</strong> as it gets hot. It is always a negative number.</p>
+                <div class="bg-slate-900 p-3 rounded border-l-2 border-rose-500">
+                    <p class="text-xs"><strong class="text-white">Example:</strong> If your datasheet says <code>-0.35 %/°C</code>, it means for every degree above 25°C, the panel loses 0.35% power.</p>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-white font-bold flex items-center gap-2"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i> NOCT (Nominal Operating Cell Temp)</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">Measures how hot a specific solar panel gets under normal operating conditions.</p>
+                <div class="bg-slate-900 p-3 rounded border-l-2 border-amber-500">
+                    <p class="text-xs"><strong class="text-white">Typical Value:</strong> Most modern panels are between <strong>42°C</strong> and <strong>45°C</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- GUIDANCE MODAL -->
+  <div id="modal-guidance" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-content !max-w-3xl" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-800 pb-2">
+            <div>
+                <h2 class="text-xl font-bold text-white">Parameter Guidance</h2>
+                <p class="text-xs text-sky-400 uppercase tracking-widest mt-1">Understanding Technical & Financial Inputs</p>
+            </div>
+            <button onclick="toggleGuidance()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+            <div class="md:col-span-2 border-b border-emerald-900/30 pb-1 mb-2">
+                 <h3 class="text-emerald-400 text-xs font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="coins" class="w-3 h-3"></i> Financial & ROI Inputs</h3>
+            </div>
+            <div class="bg-slate-900/60 p-4 rounded-xl border border-emerald-900/30">
+                <h3 class="text-emerald-400 font-bold mb-2 flex items-center gap-2"><i data-lucide="receipt" class="w-4 h-4"></i> Grid Tariff</h3>
+                <p class="text-xs text-slate-400 mb-2">Your current utility price per unit (kWh).</p>
+            </div>
+             <div class="bg-slate-900/60 p-4 rounded-xl border border-emerald-900/30">
+                <h3 class="text-emerald-400 font-bold mb-2 flex items-center gap-2"><i data-lucide="tag" class="w-4 h-4"></i> Total System Cost</h3>
+                <p class="text-xs text-slate-400 mb-2">The total Turn-key price of the solar installation.</p>
+            </div>
+            <div class="md:col-span-2 border-b border-slate-800 pb-1 mb-2 mt-4">
+                 <h3 class="text-sky-400 text-xs font-bold uppercase tracking-widest flex items-center gap-2"><i data-lucide="cpu" class="w-3 h-3"></i> Technical Engineering Inputs</h3>
+            </div>
+            <div class="bg-slate-900/60 p-4 rounded-xl border border-rose-900/30 relative overflow-hidden group">
+                <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:scale-110 transition-transform"><i data-lucide="thermometer" class="w-16 h-16 text-rose-500"></i></div>
+                <h3 class="text-rose-400 font-bold mb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Temp Coeff (Pmax)</h3>
+                <p class="text-xs text-slate-400 mb-3 relative z-10">Rate of power loss as temperature rises.</p>
+            </div>
+            <div class="bg-slate-900/60 p-4 rounded-xl border border-amber-900/30 relative overflow-hidden group">
+                <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:scale-110 transition-transform"><i data-lucide="sun-dim" class="w-16 h-16 text-amber-500"></i></div>
+                <h3 class="text-amber-400 font-bold mb-2 flex items-center gap-2"><i data-lucide="thermometer-sun" class="w-4 h-4"></i> NOCT</h3>
+                <p class="text-xs text-slate-400 mb-3 relative z-10">Nominal Operating Cell Temp.</p>
+            </div>
+             <div class="bg-slate-900/60 p-4 rounded-xl border border-sky-900/30 md:col-span-2">
+                <h3 class="text-sky-400 font-bold mb-3 flex items-center gap-2"><i data-lucide="zap-off" class="w-4 h-4"></i> System Losses (%)</h3>
+                <p class="text-xs text-slate-400 mb-3">Combined static losses from Inverter efficiency, AC/DC wiring resistance, mismatch/shading, and Light Induced Degradation before calculating dynamic environmental weather patterns.</p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+ <!-- MAIN LOGIC SCRIPT -->
+  <script>
+    // Initialize Trial Mode Automatically
+    document.addEventListener("DOMContentLoaded", () => {
+        window.isTrialMode = true;
+        
+        const mainApp = document.getElementById('main-app-container');
+        if (mainApp) {
+            mainApp.classList.remove('hidden', 'opacity-0');
+            mainApp.classList.add('opacity-100');
+        }
+        
+        const badge = document.getElementById('license-badge');
+        if (badge) {
+            badge.className = `hidden md:block px-3 py-1.5 rounded-lg border text-xs font-bold transition-colors bg-amber-900/30 text-amber-400 border-amber-800`;
+            badge.innerText = "Trial Mode";
+            badge.classList.remove('hidden');
+        }
+        
+        const expiry = document.getElementById('license-expiry');
+        if (expiry) expiry.classList.add('hidden');
+
+        // Initialize UI Icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+
+    // 5. SECURITY LOCKS (Inspection Prevention)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if(e.keyCode == 123) return false; // F12
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+        if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; // Ctrl+S
+    }
+
+    window.logout = function() {
+        if(confirm("Are you sure you want to reset simulation data?")) {
+            localStorage.removeItem("current_solar_project");
+            location.reload();
+        }
+    }
+
+    // --- RE-ATTACHING ORIGINAL UI LOGIC TO WINDOW ---
+    
+    let currentMode = 'auto';
+    let simulationData = null;
+
+    window.setMode = function(mode) {
+      currentMode = mode;
+      const auto = document.getElementById('btn-auto');
+      const man = document.getElementById('btn-manual');
+      const inputs = document.getElementById('manual-coords');
+
+      if (mode === 'manual') {
+        man.classList.replace('bg-slate-800', 'bg-sky-600');
+        man.classList.replace('text-slate-400', 'text-white');
+        auto.classList.replace('bg-sky-600', 'bg-slate-800');
+        auto.classList.replace('text-white', 'text-slate-400');
+        inputs.classList.remove('hidden');
+      } else {
+        auto.classList.replace('bg-slate-800', 'bg-sky-600');
+        auto.classList.replace('text-slate-400', 'text-white');
+        man.classList.replace('bg-sky-600', 'bg-slate-800');
+        man.classList.replace('text-white', 'text-slate-400');
+        inputs.classList.add('hidden');
+      }
+    }
+
+    window.saveProject = function() {
+        const data = {
+            capacity: document.getElementById('sys-capacity').value,
+            tilt: document.getElementById('sys-tilt').value,
+            az: document.getElementById('sys-azimuth').value,
+            lossInv: document.getElementById('loss-inv').value,
+            lossWire: document.getElementById('loss-wire').value,
+            lossMismatch: document.getElementById('loss-mismatch').value,
+            lossLid: document.getElementById('loss-lid').value,
+            lat: document.getElementById('in-lat').value,
+            lon: document.getElementById('in-lon').value,
+            currency: document.getElementById('fin-currency').value,
+            finRate: document.getElementById('fin-rate').value,
+            finCost: document.getElementById('fin-cost').value,
+            finEnabled: document.getElementById('enable-financials').checked
+        };
+        localStorage.setItem("current_solar_project", JSON.stringify(data));
+        alert("Project Saved!");
+    }
+
+    window.loadProject = function() {
+        const saved = localStorage.getItem("current_solar_project");
+        if(saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('sys-capacity').value = data.capacity || 10;
+            document.getElementById('sys-tilt').value = data.tilt || "";
+            document.getElementById('sys-azimuth').value = data.az || 180;
+            
+            // New Loss Parameters
+            document.getElementById('loss-inv').value = data.lossInv || 4.0;
+            document.getElementById('loss-wire').value = data.lossWire || 1.5;
+            document.getElementById('loss-mismatch').value = data.lossMismatch || 2.0;
+            document.getElementById('loss-lid').value = data.lossLid || 2.0;
+
+            if(data.lat) {
+                document.getElementById('in-lat').value = data.lat;
+                document.getElementById('in-lon').value = data.lon;
+                window.setMode('manual');
+            }
+            if(data.currency) document.getElementById('fin-currency').value = data.currency;
+            if(data.finRate) document.getElementById('fin-rate').value = data.finRate;
+            if(data.finCost) document.getElementById('fin-cost').value = data.finCost;
+            if(data.finEnabled !== undefined) {
+                document.getElementById('enable-financials').checked = data.finEnabled;
+                window.toggleFinancials();
+            }
+            alert("Project Loaded!");
+        } else {
+            alert("No saved project found.");
+        }
+    }
+
+    window.toggleFinancials = function() {
+        const isEnabled = document.getElementById('enable-financials').checked;
+        const container = document.getElementById('financial-inputs-container');
+        if (isEnabled) {
+            container.classList.remove('opacity-50', 'pointer-events-none');
+            container.classList.add('opacity-100');
+        } else {
+            container.classList.remove('opacity-100');
+            container.classList.add('opacity-50', 'pointer-events-none');
+        }
+    }
+
+    window.toggleInfo = function() { document.getElementById('modal-info').style.display = 'flex'; }
+    window.togglePrivacy = function() { document.getElementById('modal-privacy').style.display = 'flex'; }
+    window.toggleTechnicalHelp = function() { document.getElementById('modal-tech').style.display = 'flex'; }
+    window.toggleGuidance = function() { document.getElementById('modal-guidance').style.display = 'flex'; }
+    
+    window.closeModals = function(e) {
+        if (e.target.classList.contains('modal-overlay')) {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+    }
+
+    window.toggleBranding = function() { 
+        if(localStorage.getItem("solar_license_active") !== "true") {
+            alert("This feature is only available for Pro License holders.");
+            return;
+        }
+        document.getElementById('modal-branding').style.display = 'flex'; 
+        loadBrandingSettings();
+    }
+
+    window.handleLogoUpload = function(input) {
+        if(input.files && input.files[0]) {
+            const file = input.files[0];
+            if(file.size > 500000) {
+                alert("File too large! Max 500KB.");
+                input.value = "";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('logo-preview').src = e.target.result;
+                document.getElementById('logo-preview-container').classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    window.saveBrandingSettings = function() {
+        const name = document.getElementById('brand-name').value;
+        const logoSrc = document.getElementById('logo-preview').src;
+        const logoVisible = !document.getElementById('logo-preview-container').classList.contains('hidden');
+
+        if(name || logoVisible) {
+            const settings = { name: name, logo: logoVisible ? logoSrc : null };
+            try {
+                localStorage.setItem("solar_branding_config", JSON.stringify(settings));
+                alert("Branding saved!");
+                document.getElementById('modal-branding').style.display = 'none';
+            } catch(e) {
+                alert("Logo too large for browser storage.");
+            }
+        }
+    }
+
+    window.clearBranding = function() {
+        localStorage.removeItem("solar_branding_config");
+        document.getElementById('brand-name').value = "";
+        document.getElementById('logo-preview').src = "";
+        document.getElementById('logo-preview-container').classList.add('hidden');
+        document.getElementById('brand-logo-file').value = "";
+        alert("Branding cleared.");
+    }
+    
+    function loadBrandingSettings() {
+        const saved = localStorage.getItem("solar_branding_config");
+        if(saved) {
+            const config = JSON.parse(saved);
+            document.getElementById('brand-name').value = config.name || "";
+            if(config.logo) {
+                document.getElementById('logo-preview').src = config.logo;
+                document.getElementById('logo-preview-container').classList.remove('hidden');
+            }
+        }
+    }
+
+    function setStatus(msg, type) {
+      const badge = document.getElementById('status-badge');
+      const dot = badge.querySelector('span');
+      const text = badge.querySelector('span:last-child');
+      
+      text.innerText = msg;
+      
+      if(type === 'loading') {
+         dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+         badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-900/20 border border-amber-900/50 text-xs font-medium text-amber-400";
+      } else if (type === 'success') {
+         dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+         badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/20 border border-emerald-900/50 text-xs font-medium text-emerald-400";
+      } else if (type === 'error') {
+         dot.className = "w-2 h-2 rounded-full bg-rose-400";
+         badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-900/20 border border-rose-900/50 text-xs font-medium text-rose-400";
+      } else {
+         dot.className = "w-2 h-2 rounded-full bg-slate-600";
+         badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs font-medium text-slate-400";
+      }
+    }
+
+    // --- MAIN SIMULATION LOGIC ---
+    window.runSimulation = async function() 
+    {// --- [START] BUTTON LOCK LOGIC ---
+    const btn = document.getElementById("simBtn");
+    const btnText = document.getElementById("btnText");
+    
+    if (btn) {
+        btn.disabled = true; // Stop user from clicking again
+        btnText.innerText = "RUNNING PHYSICS ENGINE...";
+    }
+    // --- [END] BUTTON LOCK LOGIC ---
+      const capacity = parseFloat(document.getElementById('sys-capacity').value);
+      const tiltInput = document.getElementById('sys-tilt').value;
+      const azInput = parseFloat(document.getElementById('sys-azimuth').value) || 180;
+      
+      // Calculate Base Loss from distinct parameters
+      const invLoss = parseFloat(document.getElementById('loss-inv').value) || 0;
+      const wireLoss = parseFloat(document.getElementById('loss-wire').value) || 0;
+      const mismatchLoss = parseFloat(document.getElementById('loss-mismatch').value) || 0;
+      const lidLoss = parseFloat(document.getElementById('loss-lid').value) || 0;
+      const baseLoss = invLoss + wireLoss + mismatchLoss + lidLoss;
+
+      const tempCoeff = parseFloat(document.getElementById('coeff-temp').value) || -0.35;
+      const noct = parseFloat(document.getElementById('val-noct').value) || 45;
+      
+      const financialsEnabled = document.getElementById('enable-financials').checked;
+      
+      let currency, dayRate, solarCost;
+      if(financialsEnabled) {
+          currency = document.getElementById('fin-currency').value;
+          dayRate = parseFloat(document.getElementById('fin-rate').value) || 0.28;
+          solarCost = parseFloat(document.getElementById('fin-cost').value) || 12000;
+      }
+
+      if (!capacity) return alert("Please enter system capacity");
+
+      document.getElementById('state-empty').classList.add('hidden');
+      document.getElementById('state-results').classList.add('hidden');
+      document.getElementById('state-loading').classList.remove('hidden');
+      setStatus("Initializing...", "loading");
+
+      try {
+        let lat, lon;
+        if (currentMode === 'auto') {
+           const pos = await new Promise((resolve, reject) => {
+             navigator.geolocation.getCurrentPosition(resolve, reject);
+           });
+           lat = pos.coords.latitude;
+           lon = pos.coords.longitude;
+        } else {
+           lat = parseFloat(document.getElementById('in-lat').value);
+           lon = parseFloat(document.getElementById('in-lon').value);
+           if (isNaN(lat) || isNaN(lon)) throw new Error("Invalid Coordinates");
+        }
+
+        const cityRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+        const cityData = await cityRes.json();
+        const locName = cityData.city || cityData.locality || "Remote Location";
+        const country = cityData.countryName || "";
+
+        const calcTilt = (tiltInput && !isNaN(tiltInput)) ? parseFloat(tiltInput) : Math.abs(lat * 0.87); 
+        
+        setStatus("Fetching 25+ Year Data...", "loading");
+        const startYear = 2000;
+        const currentYear = new Date().getFullYear();
+        const endYear = currentYear - 1; 
+        const archiveUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${startYear}-01-01&end_date=${endYear}-12-31&daily=shortwave_radiation_sum,temperature_2m_mean&timezone=auto`;
+        
+        const longTermRes = await fetch(archiveUrl);
+        const longTermData = await longTermRes.json();
+
+        const apiAz = azInput - 180;
+        setStatus("Calculating AI Physics...", "loading");
+        
+        const hourlyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${endYear}-01-01&end_date=${endYear}-12-31&hourly=global_tilted_irradiance,temperature_2m,direct_normal_irradiance,diffuse_radiation,shortwave_radiation&tilt=${calcTilt}&azimuth=${apiAz}`;
+        const hourlyRes = await fetch(hourlyUrl);
+        const hourlyData = await hourlyRes.json();
+
+        const longTermMonthlySums = Array(12).fill(0);
+        const longTermMonthlyCounts = Array(12).fill(0);
+        const annualGHI = {}; 
+
+        longTermData.daily.time.forEach((t, i) => {
+            const date = new Date(t);
+            const m = date.getMonth();
+            const y = t.substring(0, 4);
+            const rad = longTermData.daily.shortwave_radiation_sum[i];
+            const kwh = rad / 3.6; 
+
+            if (rad !== null && !isNaN(rad)) {
+                longTermMonthlySums[m] += kwh;
+                longTermMonthlyCounts[m]++;
+                if(!annualGHI[y]) annualGHI[y] = 0;
+                annualGHI[y] += kwh;
+            }
+        });
+
+        const longTermMonthlyDailyAvg = longTermMonthlySums.map((sum, i) => 
+            longTermMonthlyCounts[i] > 0 ? sum / longTermMonthlyCounts[i] : 0
+        );
+
+        const years = Object.keys(annualGHI).filter(y => annualGHI[y] > 500); 
+        const ghiValues = years.map(y => annualGHI[y]);
+        const meanAnnualGHI = ghiValues.reduce((a,b)=>a+b,0) / ghiValues.length;
+        const variance = ghiValues.reduce((a,b) => a + Math.pow(b - meanAnnualGHI, 2), 0) / ghiValues.length;
+        const stdDev = Math.sqrt(variance);
+        const cv = (stdDev / meanAnnualGHI);
+
+        const refYearMonthlySums = Array(12).fill(0);
+        const refYearMonthlyCounts = Array(12).fill(0);
+        const strEndYear = endYear.toString();
+
+        longTermData.daily.time.forEach((t, i) => {
+            if (t.startsWith(strEndYear)) {
+                const date = new Date(t);
+                const m = date.getMonth();
+                const rad = longTermData.daily.shortwave_radiation_sum[i];
+                const kwh = rad / 3.6;
+                if (rad !== null && !isNaN(rad)) {
+                    refYearMonthlySums[m] += kwh;
+                    refYearMonthlyCounts[m]++;
+                }
+            }
+        });
+
+        const refYearMonthlyDailyAvg = refYearMonthlySums.map((sum, i) => 
+            refYearMonthlyCounts[i] > 0 ? sum / refYearMonthlyCounts[i] : 0
+        );
+
+        const monthlyScalingFactors = longTermMonthlyDailyAvg.map((ltAvg, i) => {
+            const refAvg = refYearMonthlyDailyAvg[i];
+            if (refAvg <= 0.1) return 1.0; 
+            let factor = ltAvg / refAvg;
+            return Math.max(0.5, Math.min(1.5, factor));
+        });
+
+        const monthlyResults = Array(12).fill(0).map(()=>({ 
+            poaSum: 0, tempSum: 0, count: 0, energySum: 0, tempLossSum: 0, soilLossSum: 0, daytimeCount: 0
+        }));
+
+        const isArid = (Math.abs(lat) > 15 && Math.abs(lat) < 35);
+        const isSnowy = (Math.abs(lat) > 50);
+
+        hourlyData.hourly.time.forEach((t, i) => {
+            const date = new Date(t);
+            const m = date.getMonth();
+            let rawPoa = hourlyData.hourly.global_tilted_irradiance[i] || 0; 
+            if(rawPoa < 0) rawPoa = 0;
+            let poa = rawPoa * monthlyScalingFactors[m];
+            const ambientT = hourlyData.hourly.temperature_2m[i];
+
+            if (isSnowy && ambientT < 0 && poa > 10) { poa = poa * 1.15; }
+            const cellTemp = ambientT + (poa / 800) * (noct - 20);
+            let tempLossPct = (cellTemp - 25) * (Math.abs(tempCoeff)); 
+            
+            let soilLossPct = 1.5; 
+            if (isArid && poa > 0) soilLossPct = 5.0; 
+            if (isSnowy && ambientT < -2) soilLossPct = 10.0; 
+            if (poa <= 5) { tempLossPct = 0; soilLossPct = 0; }
+
+            const totalLossDecimal = (baseLoss + tempLossPct + soilLossPct) / 100;
+            let hourlyEnergy = (capacity * (poa / 1000)) * (1 - totalLossDecimal);
+            if(hourlyEnergy < 0) hourlyEnergy = 0;
+
+            monthlyResults[m].poaSum += poa;
+            monthlyResults[m].tempSum += ambientT;
+            monthlyResults[m].count++;
+            monthlyResults[m].energySum += hourlyEnergy;
+            
+            if(poa > 5) {
+               monthlyResults[m].tempLossSum += tempLossPct;
+               monthlyResults[m].soilLossSum += soilLossPct;
+               monthlyResults[m].daytimeCount++;
+            }
+        });
+
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const finalRows = monthlyResults.map((d, i) => {
+            const poaKWh = (d.poaSum / 1000);
+            const energyKWh = d.energySum;
+            const avgTempLoss = d.daytimeCount > 0 ? (d.tempLossSum / d.daytimeCount) : 0;
+            const avgSoilLoss = d.daytimeCount > 0 ? (d.soilLossSum / d.daytimeCount) : 0;
+            return {
+                month: months[i], poa: poaKWh, temp: d.tempSum / d.count,
+                tLoss: avgTempLoss, sLoss: avgSoilLoss, energy: energyKWh,
+                cuf: (energyKWh / (capacity * 24 * (new Date(endYear, i+1, 0).getDate()))) * 100
+            };
+        });
+
+        const totalYearlyEnergy = finalRows.reduce((a,b) => a + b.energy, 0);
+        const p90Energy = totalYearlyEnergy * (1 - (1.28 * cv));
+
+        const avgAnnualTempLoss = finalRows.reduce((a,b)=>a+b.tLoss, 0) / 12;
+        const avgAnnualSoilLoss = finalRows.reduce((a,b)=>a+b.sLoss, 0) / 12;
+        const totalSystemLoss = baseLoss + avgAnnualTempLoss + avgAnnualSoilLoss;
+
+        let cumulativeSavings = 0;
+        let paybackYear = null;
+        let totalLifetimeSavings = 0;
+        let roi = 0;
+        let totalCAPEX = 0;
+        
+        if (financialsEnabled) {
+            const inflationRate = 0.035; 
+            const degradationRate = 0.0055; 
+            totalCAPEX = solarCost;
+            for (let year = 1; year <= 25; year++) {
+                const degradationFactor = Math.pow(1 - degradationRate, year - 1);
+                const inflationFactor = Math.pow(1 + inflationRate, year - 1);
+                const yieldThisYear = totalYearlyEnergy * degradationFactor;
+                const yearlyRate = dayRate * inflationFactor;
+                const yearlySaving = yieldThisYear * yearlyRate;
+                
+                cumulativeSavings += yearlySaving;
+                totalLifetimeSavings += yearlySaving;
+
+                if (cumulativeSavings >= totalCAPEX && paybackYear === null) {
+                    const prevSavings = cumulativeSavings - yearlySaving;
+                    const remaining = totalCAPEX - prevSavings;
+                    const fraction = Math.max(0, remaining / yearlySaving);
+                    paybackYear = year - 1 + fraction;
+                }
+            }
+            roi = ((totalLifetimeSavings - totalCAPEX) / totalCAPEX) * 100;
+        }
+
+        document.getElementById('loading-text').innerText = "Finalizing AI Report...";
+        setTimeout(() => {
+            renderDashboard({
+                p50: totalYearlyEnergy, p90: p90Energy,
+                pr: (totalYearlyEnergy / (finalRows.reduce((a,b)=>a+b.poa,0) * capacity)) * 100, 
+                spec: totalYearlyEnergy / capacity,
+                rows: finalRows, loc: locName, country: country, lat: lat, lon: lon, cv: cv * 100, ghi: meanAnnualGHI, tilt: calcTilt, capacity: capacity, az: azInput,
+                losses: { base: baseLoss, temp: avgAnnualTempLoss, soil: avgAnnualSoilLoss, total: totalSystemLoss },
+                tech: { coeff: tempCoeff, noct: noct },
+                financialsEnabled: financialsEnabled,
+                financials: { currency: currency, dayRate: dayRate, totalCAPEX: totalCAPEX, roi: roi, payback: paybackYear || 25, totalSavings: totalLifetimeSavings }
+            });
+        }, 800);
+
+      } catch (err) {
+        console.error(err);
+        setStatus("Error: " + err.message, "error");
+        document.getElementById('state-loading').classList.add('hidden');
+        document.getElementById('state-empty').classList.remove('hidden');
+        alert("Simulation Failed: " + err.message);
+      }// --- [START] PASTE THIS "FINALLY" BLOCK HERE ---
+      finally {
+         if (btn) {
+             // We wait 2 seconds before unlocking to prevent accidental spamming
+             setTimeout(() => {
+                 btn.disabled = false;
+                 btnText.innerText = "INITIATE 25-YEAR ANALYSIS";
+             }, 2000);
+         }
+      }
+    }
+
+    // Helper: Smart Currency Formatter
+    function formatMoney(amount, currency) {
+        const localeMap = {
+            'PKR': 'en-PK', 'INR': 'en-IN', 'USD': 'en-US', 'EUR': 'en-IE', 'GBP': 'en-GB', 'AED': 'en-AE'
+        };
+        const locale = localeMap[currency] || 'en-US';
+        return new Intl.NumberFormat(locale, {
+            style: 'currency', currency: currency, maximumFractionDigits: 0
+        }).format(amount);
+    }
+
+    function renderDashboard(data) {
+       simulationData = data;
+       document.getElementById('state-loading').classList.add('hidden');
+       document.getElementById('state-results').classList.remove('hidden');
+       document.getElementById('res-p50').innerText = Math.round(data.p50).toLocaleString();
+       document.getElementById('res-p90').innerText = Math.round(data.p90).toLocaleString();
+       document.getElementById('res-pr').innerText = data.pr.toFixed(1);
+       document.getElementById('res-spec').innerText = Math.round(data.spec).toLocaleString() + " kWh/kWp";
+       document.getElementById('res-total-loss').innerText = data.losses.total.toFixed(1) + "%";
+
+       const finPanel = document.getElementById('results-financial-panel');
+       if (data.financialsEnabled) {
+           finPanel.classList.remove('hidden');
+           const curr = data.financials.currency;
+           document.getElementById('fin-roi').innerText = data.financials.roi.toFixed(1) + "%";
+           document.getElementById('fin-payback').innerText = data.financials.payback.toFixed(1) + " Yrs";
+           document.getElementById('fin-savings').innerText = formatMoney(data.financials.totalSavings, curr);
+           document.getElementById('fin-capex-note').innerText = `Total CAPEX: ${formatMoney(data.financials.totalCAPEX, curr)}`;
+       } else {
+           finPanel.classList.add('hidden');
+       }
+
+       document.getElementById('loc-name').innerText = `${data.loc}, ${data.country}`;
+       document.getElementById('loc-coords').innerText = `${data.lat.toFixed(3)}, ${data.lon.toFixed(3)}`;
+       document.getElementById('clim-var').innerText = `±${data.cv.toFixed(1)}%`;
+       document.getElementById('clim-ghi').innerText = `${Math.round(data.ghi)} kWh/m²`;
+       document.getElementById('rec-tilt').innerText = `${data.tilt.toFixed(1)}°`;
+
+       const tbody = document.getElementById('table-body');
+       tbody.innerHTML = "";
+       data.rows.forEach(r => {
+           let tempColor = "text-slate-400";
+           if(r.tLoss > 5) tempColor = "text-amber-400 font-bold";
+           if(r.tLoss < 0) tempColor = "text-emerald-400 font-bold";
+
+           tbody.innerHTML += `
+             <tr class="hover:bg-slate-800/40 transition-colors">
+               <td class="px-4 py-3 font-bold text-slate-500">${r.month}</td>
+               <td class="px-4 py-3">${r.poa.toFixed(1)}</td>
+               <td class="px-4 py-3">${r.temp.toFixed(1)}</td>
+               <td class="px-4 py-3 ${tempColor}">${r.tLoss.toFixed(1)}%</td>
+               <td class="px-4 py-3 text-slate-400">${r.sLoss.toFixed(1)}%</td>
+               <td class="px-4 py-3 text-white font-bold">${Math.round(r.energy).toLocaleString()}</td>
+               <td class="px-4 py-3 text-sky-400">${r.cuf.toFixed(1)}%</td>
+             </tr>
+           `;
+       });
+       setStatus("Analysis Complete", "success");
+    }
+
+    window.exportReport = function() {
+      const hasPro = localStorage.getItem("solar_license_active") === "true";
+      const isTrial = window.isTrialMode;
+      
+      if(!hasPro && !isTrial) {
+          alert("Please unlock the system first.");
+          return;
+      }
+      
+      if(!simulationData) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      doc.setFillColor(15, 23, 42); 
+      doc.rect(0, 0, 210, 40, 'F');
+      
+      const brandingConfig = JSON.parse(localStorage.getItem("solar_branding_config") || "null");
+      const hasBranding = hasPro && brandingConfig && (brandingConfig.name || brandingConfig.logo);
+
+      if(hasBranding) {
+          if(brandingConfig.logo) {
+              doc.addImage(brandingConfig.logo, 'PNG', 14, 8, 24, 24);
+              if(brandingConfig.name) {
+                  doc.setFont("helvetica", "bold");
+                  doc.setTextColor(255, 255, 255); 
+                  doc.setFontSize(18);
+                  doc.text(brandingConfig.name.toUpperCase(), 44, 20);
+                  doc.setFontSize(10);
+                  doc.setTextColor(14, 165, 233);
+                  doc.text("Powered by Solar Metrix Pro", 44, 26);
+              }
+          } else {
+               doc.setFont("helvetica", "bold");
+               doc.setTextColor(255, 255, 255); 
+               doc.setFontSize(22);
+               doc.text(brandingConfig.name.toUpperCase(), 14, 20);
+               doc.setFontSize(10);
+               doc.setTextColor(14, 165, 233);
+               doc.text("Powered by Solar Metrix Pro", 14, 28);
+          }
+      } else {
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(14, 165, 233); 
+          doc.setFontSize(22);
+          doc.text("SOLAR METRIX PRO", 14, 20);
+          doc.setFontSize(10);
+          doc.setTextColor(255, 255, 255);
+          doc.text("Estimated Yield Report", 14, 28);
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255);
+      doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 20);
+      doc.text(`Project: ${simulationData.loc} ${simulationData.capacity}kWp`, 150, 28);
+
+      let yPos = 50;
+
+      doc.setDrawColor(200);
+      doc.setFillColor(245, 247, 250); 
+      doc.roundedRect(14, yPos, 55, 30, 3, 3, 'FD');
+      doc.setTextColor(100); doc.setFontSize(9); doc.text("P50 Expected Yield", 20, yPos+8);
+      doc.setTextColor(0); doc.setFontSize(14); doc.text(`${Math.round(simulationData.p50).toLocaleString()} kWh`, 20, yPos+18);
+      
+      doc.setFillColor(245, 247, 250); 
+      doc.roundedRect(77, yPos, 55, 30, 3, 3, 'FD');
+      doc.setTextColor(100); doc.setFontSize(9); doc.text("P90 Conservative", 83, yPos+8);
+      doc.setTextColor(0); doc.setFontSize(14); doc.text(`${Math.round(simulationData.p90).toLocaleString()} kWh`, 83, yPos+18);
+      
+      doc.setFillColor(245, 247, 250); 
+      doc.roundedRect(140, yPos, 55, 30, 3, 3, 'FD');
+      doc.setTextColor(100); doc.setFontSize(9); doc.text("Total Avg System Loss", 146, yPos+8);
+      doc.setTextColor(220, 38, 38); doc.setFontSize(14); doc.text(`${simulationData.losses.total.toFixed(1)}%`, 146, yPos+18);
+      doc.setTextColor(100); doc.setFontSize(8); doc.text(`(Static: ${simulationData.losses.base.toFixed(1)}%)`, 146, yPos+25);
+
+      yPos += 40;
+
+      if (simulationData.financialsEnabled) {
+          const curr = simulationData.financials.currency;
+          doc.setFontSize(12);
+          doc.setTextColor(0);
+          doc.setFont("helvetica", "bold");
+          
+          doc.text(`Financial Return Statement`, 14, yPos);
+          doc.setFont("helvetica", "normal");
+          
+          const finBody = [
+                ['Total CAPEX', formatMoney(simulationData.financials.totalCAPEX, curr), 'Initial System Cost'],
+                ['Payback Period', `${simulationData.financials.payback.toFixed(1)} Years`, 'Break-even point'],
+                ['25-Year Net Savings', formatMoney(simulationData.financials.totalSavings, curr), 'After inflation & degradation'],
+                ['Return on Investment', `${simulationData.financials.roi.toFixed(1)}%`, 'Lifetime ROI']
+          ];
+
+          yPos += 5;
+          doc.autoTable({
+            startY: yPos,
+            head: [['Metric', 'Value', 'Notes']],
+            body: finBody,
+            theme: 'grid',
+            headStyles: { fillColor: [16, 185, 129] }, 
+            styles: { fontSize: 9, cellPadding: 3 }
+          });
+          
+          yPos = doc.lastAutoTable.finalY + 15;
+      }
+
+      doc.setFontSize(11);
+      doc.setTextColor(0);
+      doc.text("System Parameters", 14, yPos);
+      
+      const paramBody = [
+          ['Capacity', `${simulationData.capacity} kWp`, 'Coordinates', `${simulationData.lat.toFixed(3)}, ${simulationData.lon.toFixed(3)}`],
+          ['Tilt / Azimuth', `${simulationData.tilt.toFixed(1)}° / ${simulationData.az}°`, 'Climate Volatility', `±${simulationData.cv.toFixed(2)}% (25-yr)`],
+          ['Module NOCT', `${simulationData.tech.noct}°C`, 'Physics Model', 'AI Trained (2000-Present)']
+      ];
+
+      doc.autoTable({
+        startY: yPos + 5,
+        head: [['Parameter', 'Value', 'Parameter', 'Value']],
+        body: paramBody,
+        theme: 'grid',
+        styles: { fontSize: 9, cellPadding: 2 },
+        headStyles: { fillColor: [51, 65, 85] }
+      });
+
+      doc.text("Monthly Physics Breakdown", 14, doc.lastAutoTable.finalY + 15);
+      
+      doc.autoTable({
+        startY: doc.lastAutoTable.finalY + 20,
+        head: [['Month', 'POA (kWh/m2)', 'Avg Temp (C)', 'Temp Loss %', 'Soil Loss %', 'Energy (kWh)', 'CUF %']],
+        body: simulationData.rows.map(r => [
+          r.month, r.poa.toFixed(0), r.temp.toFixed(1), r.tLoss.toFixed(1), r.sLoss.toFixed(1), Math.round(r.energy).toLocaleString(), r.cuf.toFixed(1)
+        ]),
+        theme: 'striped',
+        headStyles: { fillColor: [14, 165, 233] },
+        styles: { fontSize: 9, halign: 'center' },
+        columnStyles: { 0: { halign: 'left', fontStyle: 'bold' } }
+      });
+
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      const disclaimY = doc.lastAutoTable.finalY + 15;
+      doc.text("Engine: Solar Metrix Pro. Data: Open-Meteo Archive (2000-Present).", 14, disclaimY);
+      
+      if(!hasPro) {
+          const totalPages = doc.internal.getNumberOfPages();
+          for (let i = 1; i <= totalPages; i++) {
+              doc.setPage(i);
+              doc.saveGraphicsState();
+              doc.setGState(new doc.GState({ opacity: 0.15 })); 
+              doc.setTextColor(150, 150, 150);
+              doc.setFontSize(40);
+              doc.text("TRIAL MODE", 40, 60, { angle: 45 });
+              doc.text("NOT FOR OFFICIAL USE", 40, 120, { angle: 45 });
+              doc.text("SUBSCRIBE FOR LOGO", 40, 180, { angle: 45 });
+              doc.restoreGraphicsState();
+          }
+          doc.setPage(totalPages);
+          doc.setFontSize(10);
+          doc.setTextColor(220, 38, 38); 
+          doc.text("Want to remove watermarks and add YOUR company logo? Subscribe to Pro.", 14, 280);
+      }
+
+      doc.save(`SolarMetrix_${simulationData.loc}_${simulationData.capacity}kWp.pdf`);
+    }
+  </script>
+
+</body>
+
+</html>
