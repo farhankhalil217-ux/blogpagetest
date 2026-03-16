@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Metrix | Engineering Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <style>
+        /* This tells the website how to style the markdown our AI writes */
+        .prose h1 { @apply text-4xl font-bold mb-6 text-slate-900; }
+        .prose h2 { @apply text-2xl font-bold mt-10 mb-4 text-slate-800; }
+        .prose p { @apply mb-6 text-slate-600 leading-relaxed text-lg; }
+        .prose blockquote { @apply border-l-4 border-blue-500 bg-blue-50 p-6 italic my-8 rounded-r-lg text-slate-700; }
+        .prose img { @apply rounded-xl shadow-lg my-8 w-full object-cover; }
+        .prose ul { @apply list-disc list-inside mb-6 text-slate-600 space-y-2; }
+        .prose a { @apply text-blue-600 hover:underline font-medium; }
+    </style>
+</head>
+<body class="bg-slate-50 antialiased">
+
+    <nav class="bg-white border-b border-slate-200 py-4">
+        <div class="max-w-4xl mx-auto px-6 flex justify-between items-center">
+            <span class="text-xl font-bold text-slate-900">Solar<span class="text-blue-600">Metrix</span></span>
+            <a href="/" class="text-slate-500 hover:text-blue-600">Back to Main App</a>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-16">
+        
+        <div id="loading" class="text-center text-slate-400 py-20">
+            <p>Loading analysis...</p>
+        </div>
+
+        <article id="blog-content" class="prose hidden"></article>
+
+    </main>
+
+    <script>
+        // 1. Get the requested article filename from the URL (e.g., ?file=my_article.md)
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileName = urlParams.get('file');
+
+        const contentDiv = document.getElementById('blog-content');
+        const loadingDiv = document.getElementById('loading');
+
+        if (!fileName) {
+            loadingDiv.innerHTML = "Error: No article specified.";
+        } else {
+            // 2. Fetch the raw Markdown file from the content/blog/ folder
+            fetch(`../content/blog/${fileName}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Article not found.");
+                    return response.text();
+                })
+                .then(markdownText => {
+                    // 3. Convert Markdown to HTML using Marked.js
+                    contentDiv.innerHTML = marked.parse(markdownText);
+                    
+                    // Hide loading, show content
+                    loadingDiv.classList.add('hidden');
+                    contentDiv.classList.remove('hidden');
+                })
+                .catch(error => {
+                    loadingDiv.innerHTML = "Sorry, this article could not be loaded.";
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
