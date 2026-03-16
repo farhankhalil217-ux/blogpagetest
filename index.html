@@ -825,52 +825,5 @@
           }
       });
   </script>
-  <script>
-    // 5. SECURITY LOCKS (Inspection Prevention)
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if(e.keyCode == 123) return false; // F12
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
-        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
-        if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; // Ctrl+S
-    }
-    
-    // ==========================================
-    // 🛡️ DOMAIN LOCK SYSTEM 
-    // ==========================================
-    
-    const ALLOWED_DOMAINS = [
-        "solarmetrix.app",
-        "www.solarmetrix.app",
-        "localhost" // Kept for local testing, remove if you want it locked entirely in prod
-    ];
-
-    const currentDomain = window.location.hostname;
-    const isAuthorizedFile = window.location.protocol === 'file:' && window.location.pathname.endsWith('index.html');
-
-    if (!ALLOWED_DOMAINS.includes(currentDomain) && !isAuthorizedFile) {
-        console.warn("Security Alert: Unauthorized Domain Access Attempt");
-        document.body.innerHTML = `
-            <div style="
-                display:flex; height:100vh; background-color:#020617; color:#ef4444; 
-                align-items:center; justify-content:center; flex-direction:column; 
-                font-family: 'Courier New', monospace; text-align:center; padding:20px;
-            ">
-                <div style="font-size:40px; margin-bottom:20px;">🚫</div>
-                <h1 style="font-size:24px; font-weight:bold; margin-bottom:10px; letter-spacing:2px;">SECURITY ALERT</h1>
-                <p style="font-size:14px; color:#94a3b8; max-width:500px;">
-                    This application is protected by an Enterprise License Grid.<br>
-                    It has detected an unauthorized host environment.
-                </p>
-                <div style="margin-top:30px; padding:10px 20px; background:#1e293b; border:1px solid #334155; border-radius:5px; font-size:12px; color:#fff;">
-                    Detected Origin: <span style="color:#38bdf8">${currentDomain || "Unknown Local File"}</span>
-                </div>
-            </div>
-        `;
-        throw new Error("⛔ DOMAIN LOCK ACTIVATED");
-    }
-  </script>
 </body>
 </html>
