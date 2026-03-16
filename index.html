@@ -12,9 +12,12 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://solarmetrix.app/linkpic.jpeg" />
   
+  <!-- WEBSITE ICON (FAVICON) -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='4'/><path d='M12 2v2'/><path d='M12 20v2'/><path d='m4.93 4.93 1.41 1.41'/><path d='m17.66 17.66 1.41 1.41'/><path d='M2 12h2'/><path d='M20 12h2'/><path d='m6.34 17.66-1.41 1.41'/><path d='m19.07 4.93-1.41 1.41'/></svg>" />
+  <!-- Fallback for uploaded icon -> Just upload 'favicon.ico' to your root directory -->
   <link rel="alternate icon" href="/favicon.ico">
 
+  <!-- EXTERNAL LIBRARIES -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -61,6 +64,15 @@
     html { scroll-behavior: smooth; }
     body { -webkit-font-smoothing: antialiased; }
     
+    img {
+        text-indent: -10000px;
+        color: transparent;
+    }
+    img:after {
+        content: "\f015";
+        font-family: FontAwesome;
+    }
+    
     .modal-scrollbar::-webkit-scrollbar {
         width: 8px;
     }
@@ -79,6 +91,7 @@
 </head>
 <body class="antialiased">
 
+  <!-- NAVBAR -->
   <nav class="fixed top-0 w-full z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -100,6 +113,7 @@
     </div>
   </nav>
 
+  <!-- HERO SECTION -->
   <section class="relative pt-32 pb-20 px-6 overflow-hidden">
     <div class="hero-glow"></div>
     <div class="max-w-4xl mx-auto text-center space-y-6">
@@ -132,6 +146,7 @@
         </a>
       </div>
 
+      <!-- UI MOCKUP -->
       <div class="mt-16 relative mx-auto max-w-5xl rounded-xl border border-slate-700 bg-slate-900/50 p-2 shadow-2xl">
         <div class="absolute top-0 left-0 w-full h-8 bg-slate-950/80 border-b border-slate-800 rounded-t-xl flex items-center px-4 gap-2">
           <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
@@ -144,6 +159,7 @@
     </div>
   </section>
 
+  <!-- FEATURES GRID -->
   <section id="features" class="py-24 bg-slate-950/50 border-t border-slate-900/50">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16">
@@ -152,6 +168,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
         <div class="glass-panel p-8 group hover:border-sky-500/50 transition-colors relative overflow-hidden">
           <div class="w-12 h-12 bg-sky-900/40 rounded-lg flex items-center justify-center mb-6 text-sky-400 border border-sky-500/20 group-hover:bg-sky-500/20 transition-colors">
             <i data-lucide="cloud-rain" class="w-6 h-6"></i>
@@ -162,6 +179,7 @@
           </p>
         </div>
 
+        <!-- Feature 2 -->
         <div class="glass-panel p-8 group hover:border-emerald-500/50 transition-colors relative overflow-hidden">
           <div class="w-12 h-12 bg-emerald-900/40 rounded-lg flex items-center justify-center mb-6 text-emerald-400 border border-emerald-500/20 group-hover:bg-emerald-500/20 transition-colors">
             <i data-lucide="zap" class="w-6 h-6"></i>
@@ -172,6 +190,7 @@
           </p>
         </div>
 
+        <!-- Feature 3 -->
         <div class="glass-panel p-8 group hover:border-amber-500/50 transition-colors relative overflow-hidden">
           <div class="w-12 h-12 bg-amber-900/40 rounded-lg flex items-center justify-center mb-6 text-amber-400 border border-amber-500/20 group-hover:bg-amber-500/20 transition-colors">
             <i data-lucide="briefcase" class="w-6 h-6"></i>
@@ -185,6 +204,7 @@
     </div>
   </section>
 
+  <!-- BLOG / INSIGHTS SECTION -->
   <section id="blog" class="py-24 px-6 bg-slate-900 border-t border-slate-800 relative">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -192,23 +212,62 @@
           <h2 class="text-3xl font-bold text-white tracking-tight">Industry Insights & Updates</h2>
           <p class="text-slate-400 mt-3 max-w-2xl">Read the latest on solar yield analysis, engineering best practices, and Solar Metrix software updates.</p>
         </div>
-        <a href="#blog" class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-semibold border border-slate-700 transition-colors">
-          View All Articles
-          <i data-lucide="external-link" class="w-4 h-4"></i>
-        </a>
+        <!-- Button mapping to external GitHub pages blog. External links will open in a new window. -->
+        <a href="post.html" class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-semibold border border-slate-700 transition-colors">
+    View All Articles & News
+    <i data-lucide="external-link" class="w-4 h-4"></i>
+</a>
       </div>
 
+      <!-- Blog Cards Container -->
       <div id="blog-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        <div id="blog-loading" class="col-span-full text-center text-slate-400 py-12">
-          <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto text-sky-500 mb-4"></i>
-          <p>Fetching latest engineering intelligence...</p>
+        <!-- Blog Card 1: Triggers Modal -->
+        <div onclick="openArticle('p50-p90')" class="group block glass-panel overflow-hidden hover:border-sky-500/50 transition-colors cursor-pointer">
+          <div class="h-48 bg-slate-800 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-sky-900/40 to-slate-800 group-hover:scale-105 transition-transform duration-500"></div>
+            <i data-lucide="sun" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 text-sky-500/20"></i>
+          </div>
+          <div class="p-6">
+            <div class="text-sky-400 text-xs font-bold uppercase tracking-wider mb-2">Engineering</div>
+            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-sky-400 transition-colors">Understanding P50 vs P90 Yield Confidence</h3>
+            <p class="text-slate-400 text-sm line-clamp-2 mb-4">A deep dive into why banks require P90 reports and how our AI physics engine calculates variance accurately.</p>
+            <div class="text-xs text-slate-500 font-medium">Oct 12, 2024 • 5 min read</div>
+          </div>
         </div>
-        
+
+        <!-- Blog Card 2: Triggers Modal -->
+        <div onclick="openArticle('v2-release')" class="group block glass-panel overflow-hidden hover:border-amber-500/50 transition-colors cursor-pointer">
+          <div class="h-48 bg-slate-800 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-amber-900/40 to-slate-800 group-hover:scale-105 transition-transform duration-500"></div>
+            <i data-lucide="bar-chart-2" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 text-amber-500/20"></i>
+          </div>
+          <div class="p-6">
+            <div class="text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">Software Update</div>
+            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Solar Metrix v2.0 Released</h3>
+            <p class="text-slate-400 text-sm line-clamp-2 mb-4">Introducing our new 25-year climate data processing algorithms for highly accurate local soiling and thermal loss modeling.</p>
+            <div class="text-xs text-slate-500 font-medium">Nov 04, 2024 • 3 min read</div>
+          </div>
         </div>
+
+        <!-- Blog Card 3: Triggers Modal -->
+        <div onclick="openArticle('commercial-deals')" class="group block glass-panel overflow-hidden hover:border-emerald-500/50 transition-colors cursor-pointer">
+          <div class="h-48 bg-slate-800 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-emerald-900/40 to-slate-800 group-hover:scale-105 transition-transform duration-500"></div>
+            <i data-lucide="file-text" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 text-emerald-500/20"></i>
+          </div>
+          <div class="p-6">
+            <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">Sales Strategy</div>
+            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">Closing Commercial Deals with Better Data</h3>
+            <p class="text-slate-400 text-sm line-clamp-2 mb-4">How to utilize white-labeled engineering reports to establish trust and win larger commercial EPC contracts.</p>
+            <div class="text-xs text-slate-500 font-medium">Dec 18, 2024 • 6 min read</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- PRICING SECTION -->
   <section id="pricing" class="py-24 px-6 relative border-t border-slate-900 bg-slate-950/50">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-16">
@@ -218,6 +277,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         
+        <!-- FREE WEB TIER -->
         <div class="glass-panel p-8 rounded-xl border border-slate-800 flex flex-col relative bg-slate-900/30">
           <h3 class="text-xl font-bold text-white">Free Web Tool</h3>
           <p class="text-slate-400 text-sm mt-2 mb-6">Basic simulator for quick, informal energy estimations.</p>
@@ -263,6 +323,7 @@
           </a>
         </div>
 
+        <!-- LIFETIME OFFLINE PRO TIER -->
         <div class="glass-panel p-1 rounded-xl relative shadow-2xl transform md:-translate-y-4">
           <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-sky-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg z-10 whitespace-nowrap">
             Professional Offline Software
@@ -308,6 +369,7 @@
               </li>
             </ul>
 
+            <!-- SMART EMAIL LINK BUTTON -->
             <button onclick="handleSmartEmail(event)" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all shadow-lg shadow-emerald-900/30">
               <i data-lucide="mail" class="w-5 h-5"></i>
               Email to Request Access
@@ -320,6 +382,7 @@
     </div>
   </section>
 
+  <!-- PADDLE COMPLIANCE FOOTER -->
   <footer class="bg-slate-950 border-t border-slate-900 pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
@@ -355,6 +418,7 @@
       <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
         <p>&copy; 2024 Solar Metrix. All rights reserved.</p>
         
+        <!-- COMPLIANCE: ADDRESS & CONTACT -->
         <div class="text-right md:text-left space-y-1">
           <p>Operated by Solar Metrix Dev Team</p>
           <p>Multan, Pakistan</p>
@@ -364,10 +428,15 @@
     </div>
   </footer>
   
+  <!-- ========================================== -->
+  <!-- INFOGRAPHIC MODAL OVERLAY START -->
+  <!-- ========================================== -->
   <div id="infographicModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 sm:p-6 transition-opacity duration-300">
       
+      <!-- Modal Content Container -->
       <div class="relative w-full max-w-6xl bg-slate-950 border border-slate-800 shadow-2xl rounded-xl sm:rounded-2xl overflow-hidden flex flex-col max-h-[95vh] animate-in fade-in zoom-in-95 duration-300">
           
+          <!-- Sticky Header with Close Button -->
           <div class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-slate-950/95 backdrop-blur border-b border-slate-800">
               <div class="flex items-center space-x-3">
                   <i data-lucide="cpu" class="w-5 h-5 text-amber-400"></i>
@@ -378,8 +447,10 @@
               </button>
           </div>
 
+          <!-- Scrollable Infographic Content -->
           <div class="overflow-y-auto modal-scrollbar p-4 sm:p-8 lg:p-12">
               
+              <!-- Infographic Header -->
               <div class="max-w-4xl mx-auto text-center mb-16">
                   <div class="inline-flex items-center justify-center p-2 bg-amber-500/10 rounded-full mb-6 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                       <i data-lucide="zap" class="w-5 h-5 text-amber-400 mr-2"></i>
@@ -394,11 +465,14 @@
                   </p>
               </div>
 
+              <!-- Timeline Infographic -->
               <div class="max-w-5xl mx-auto relative mt-12 pb-12">
+                  <!-- Central glowing line -->
                   <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/50 via-emerald-500/50 to-rose-500/50 transform md:-translate-x-1/2 shadow-[0_0_10px_rgba(255,255,255,0.05)] hidden sm:block"></div>
 
                   <div class="space-y-12 sm:space-y-16">
 
+                      <!-- Step 1: Location Profiling (Left) -->
                       <div class="relative flex items-center w-full justify-start md:justify-start">
                           <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-slate-900 border border-slate-700 shadow-[0_0_15px_rgba(59,130,246,0.2)] z-10 hidden sm:flex">
                               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-400/20 text-blue-400">
@@ -428,6 +502,7 @@
                           </div>
                       </div>
 
+                      <!-- Step 2: POA Irradiance (Right) -->
                       <div class="relative flex items-center w-full justify-start md:justify-end">
                           <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-slate-900 border border-slate-700 shadow-[0_0_15px_rgba(245,158,11,0.2)] z-10 hidden sm:flex">
                               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-amber-400/20 text-amber-400">
@@ -453,6 +528,7 @@
                           </div>
                       </div>
 
+                      <!-- Step 3: AI Physics Engine (Left) -->
                       <div class="relative flex items-center w-full justify-start md:justify-start">
                           <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-slate-900 border border-slate-700 shadow-[0_0_15px_rgba(34,211,238,0.2)] z-10 hidden sm:flex">
                               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-cyan-400/20 text-cyan-400">
@@ -475,6 +551,7 @@
                                       </li>
                                   </ul>
                                   
+                                  <!-- Configuration Screenshot Integration -->
                                   <div class="mt-6 border border-slate-700 rounded-lg overflow-hidden relative bg-slate-950">
                                       <div class="bg-slate-900 py-1.5 px-3 border-b border-slate-800 flex items-center">
                                           <span class="text-[10px] text-slate-500 font-mono uppercase">System_Parameters.cfg</span>
@@ -490,6 +567,7 @@
                           </div>
                       </div>
 
+                      <!-- Step 4: Yield Generation (Right) -->
                       <div class="relative flex items-center w-full justify-start md:justify-end">
                           <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-slate-900 border border-slate-700 shadow-[0_0_15px_rgba(16,185,129,0.2)] z-10 hidden sm:flex">
                               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-400/20 text-emerald-400">
@@ -512,6 +590,7 @@
                                       </li>
                                   </ul>
 
+                                  <!-- Yield Outputs Screenshot Integration -->
                                   <div class="mt-6 border border-slate-700 rounded-lg overflow-hidden relative bg-slate-950">
                                       <img 
                                           src="Screenshot 2026-02-16 175919.png" 
@@ -524,6 +603,7 @@
                           </div>
                       </div>
 
+                      <!-- Step 5: Financial ROI (Left) -->
                       <div class="relative flex items-center w-full justify-start md:justify-start">
                           <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-slate-900 border border-slate-700 shadow-[0_0_15px_rgba(168,85,247,0.2)] z-10 hidden sm:flex">
                               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-purple-400/20 text-purple-400">
@@ -552,6 +632,7 @@
                   </div>
               </div>
 
+              <!-- Footer CTA inside modal -->
               <div class="max-w-3xl mx-auto mt-8 text-center pb-8">
                   <button id="closeModalBottomBtn" class="inline-flex bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold py-2.5 px-8 rounded-lg transition-all items-center justify-center">
                       <span>Close Technical Overview</span>
@@ -561,6 +642,46 @@
       </div>
   </div>
   
+  <!-- ========================================== -->
+  <!-- BLOG ARTICLE MODAL OVERLAY START -->
+  <!-- ========================================== -->
+  <div id="articleModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-300">
+      <div class="relative w-full max-w-3xl bg-slate-900 border border-slate-700 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300">
+          
+          <!-- Sticky Article Header -->
+          <div class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-slate-900/95 backdrop-blur border-b border-slate-800">
+              <div class="flex items-center space-x-3">
+                  <i data-lucide="book-open" class="w-5 h-5 text-sky-400"></i>
+                  <span class="font-bold text-white tracking-wide text-sm uppercase">Solar Metrix Insights</span>
+              </div>
+              <button onclick="closeArticle()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-md transition-colors border border-slate-700 hover:border-slate-500">
+                  <i data-lucide="x" class="w-5 h-5"></i>
+              </button>
+          </div>
+
+          <!-- Article Content Body -->
+          <div class="overflow-y-auto modal-scrollbar p-6 sm:p-10">
+              <div id="article-category" class="text-sky-400 text-xs font-bold uppercase tracking-wider mb-3">Category</div>
+              <h2 id="article-title" class="text-3xl font-extrabold text-white leading-tight mb-4">Article Title</h2>
+              <div class="flex items-center gap-4 text-xs font-medium text-slate-500 mb-8 pb-8 border-b border-slate-800">
+                  <span id="article-date">Date</span>
+                  <span id="article-read-time">Read Time</span>
+              </div>
+              
+              <!-- Content rendered here via JavaScript -->
+              <div id="article-content" class="text-slate-300 text-base leading-relaxed space-y-6">
+                 <!-- JS dynamic content injected here -->
+              </div>
+              
+              <div class="mt-12 pt-8 border-t border-slate-800 text-center">
+                 <button onclick="closeArticle()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold rounded-lg transition-colors border border-slate-700">Back to Home</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- Scripts -->
   <script>
       // Initialize Icons
       lucide.createIcons();
@@ -600,7 +721,9 @@
       function handleSmartEmail(e) {
           e.preventDefault();
           
+          // Basic check for mobile user-agent
           const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          
           const email = "purchase@solarmetrix.app";
           const subject = encodeURIComponent("Purchase Request: Solar Metrix Offline Pro License");
           const body = encodeURIComponent(
@@ -613,101 +736,96 @@
           );
 
           if (isMobile) {
+              // Mobile: Use standard mailto which triggers the native mail app (Gmail, Apple Mail, etc.)
               window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
           } else {
+              // Desktop: Force open Gmail explicitly in a new browser tab to avoid desktop OS mail app issues
               const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
               window.open(gmailUrl, '_blank');
           }
       }
 
       // ==========================================
-      // DYNAMIC AI BLOG GENERATOR LOGIC
+      // BLOG ARTICLE MODAL LOGIC & CONTENT
       // ==========================================
-      async function loadBlogFeed() {
-          const repoUrl = 'https://api.github.com/repos/farhankhalil217-ux/blogpagetest/contents/posts';
-          const feedContainer = document.getElementById('blog-container');
-          const loadingDiv = document.getElementById('blog-loading');
-
-          try {
-              const response = await fetch(repoUrl);
-              if (!response.ok) throw new Error("Could not connect to repository.");
-              const files = await response.json();
-
-              loadingDiv.style.display = 'none';
-
-              // Filter for Markdown files and reverse to show newest first
-              const mdFiles = files.filter(file => file.name.endsWith('.md')).reverse();
-              
-              // Only pull the 3 most recent articles for the homepage grid
-              const latestFiles = mdFiles.slice(0, 3);
-
-              latestFiles.forEach(file => {
-                  const parts = file.name.replace('.md', '').split('_');
-                  const isUrgent = parts[0] === '0';
-                  
-                  let publishDate = "Recent";
-                  if (parts[2] && !isNaN(parts[2])) {
-                      publishDate = new Date(parseInt(parts[2]) * 1000).toLocaleDateString('en-US', { 
-                          month: 'short', day: 'numeric', year: 'numeric' 
-                      });
-                  }
-
-                  const partNumber = parts[4] || '1';
-                  
-                  // Aesthetic styling matching the Solar Metrix glass-panel design
-                  const badgeColorClass = isUrgent ? 'text-red-400' : 'text-sky-400';
-                  const badgeText = isUrgent ? 'Priority Override' : 'Engineering';
-                  const bgGradientClass = isUrgent ? 'from-red-900/40' : 'from-sky-900/40';
-                  const hoverBorderClass = isUrgent ? 'hover:border-red-500/50' : 'hover:border-sky-500/50';
-                  const hoverTextClass = isUrgent ? 'group-hover:text-red-400' : 'group-hover:text-sky-400';
-                  const iconName = isUrgent ? 'alert-circle' : 'cpu';
-                  const iconColorClass = isUrgent ? 'text-red-500/20' : 'text-sky-500/20';
-
-                  const card = `
-                      <a href="post.html?file=${file.name}" class="group block glass-panel overflow-hidden ${hoverBorderClass} transition-colors cursor-pointer flex flex-col h-full">
-                          <div class="h-48 bg-slate-800 w-full relative overflow-hidden shrink-0">
-                              <div class="absolute inset-0 bg-gradient-to-tr ${bgGradientClass} to-slate-800 group-hover:scale-105 transition-transform duration-500"></div>
-                              <i data-lucide="${iconName}" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 ${iconColorClass}"></i>
-                          </div>
-                          <div class="p-6 flex flex-col flex-grow">
-                              <div class="${badgeColorClass} text-xs font-bold uppercase tracking-wider mb-2">${badgeText}</div>
-                              <h3 class="text-lg font-bold text-white mb-2 ${hoverTextClass} transition-colors line-clamp-2">Technical Report: Sequence ${partNumber}</h3>
-                              <p class="text-slate-400 text-sm line-clamp-2 mb-4 flex-grow">Automated yield analysis and dynamic modeling report generated by Solar Metrix Engine.</p>
-                              <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-800">
-                                  <div class="text-xs text-slate-500 font-medium">${publishDate}</div>
-                                  <div class="${badgeColorClass} text-sm font-semibold flex items-center">
-                                      Read <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
-                                  </div>
-                              </div>
-                          </div>
-                      </a>
-                  `;
-                  
-                  feedContainer.insertAdjacentHTML('beforeend', card);
-              });
-
-              // Re-initialize Lucide icons for the newly injected HTML
-              lucide.createIcons();
-
-              if (mdFiles.length === 0) {
-                  feedContainer.innerHTML = "<p class='text-slate-500 col-span-full text-center py-8'>No engineering reports have been published yet.</p>";
-              }
-
-          } catch (error) {
-              loadingDiv.innerHTML = "<p class='text-red-500'>Error loading the intelligence feed.</p>";
-              console.error(error);
+      const articleData = {
+          'p50-p90': {
+              category: 'Engineering',
+              title: 'Understanding P50 vs P90 Yield Confidence',
+              date: 'Oct 12, 2024',
+              readTime: '5 min read',
+              content: `
+                  <p>When developing commercial solar projects, relying on a single 'expected' yield number is no longer enough for investors. This is where P50 and P90 confidence intervals come into play, serving as the backbone for serious financial underwriting.</p>
+                  <p><strong>P50 represents the baseline expected generation.</strong> It signifies that there is a 50% statistical probability the system will produce this much energy or more in a given year. P50 is considered the standard, most likely outcome and is typically the number used by sales teams to calculate base ROI and general payback periods.</p>
+                  <p><strong>P90 represents risk mitigation.</strong> Banks, financiers, and commercial EPCs require a wider safety margin before extending credit or capital. P90 provides a highly conservative estimate, ensuring a 90% probability that the solar array will meet this minimum energy threshold, regardless of unusually cloudy years or extreme weather anomalies.</p>
+                  <p>The Solar Metrix AI physics engine automatically calculates these variances. By processing 25 years of historical Global Horizontal Irradiance (GHI) and modeling standard deviations against real-world component efficiency drop-offs, our software provides the exact bankable figures your clients need to secure funding without the guesswork.</p>
+              `
+          },
+          'v2-release': {
+              category: 'Software Update',
+              title: 'Solar Metrix v2.0 Released: 25-Year Data Engine',
+              date: 'Nov 04, 2024',
+              readTime: '3 min read',
+              content: `
+                  <p>We are thrilled to announce the rollout of Solar Metrix v2.0, representing a massive leap forward in expected yield calculation accuracy for our engineering user base.</p>
+                  <p>The core of this upgrade is our shift away from standard single-year TMY (Typical Meteorological Year) data. V2.0 now processes over <strong>25 years of historical climate and GHI data</strong>. This deep historical aggregation allows our AI physics engine to map true weather volatility, rather than just relying on generic statistical averages.</p>
+                  <p>Furthermore, we have introduced highly dynamic thermal and soiling loss modeling. Instead of applying flat percentage derates across the board, the v2.0 engine calculates hour-by-hour thermal penalties based on the specific solar panel's NOCT (Nominal Operating Cell Temperature) rating intersecting with localized ambient heat waves.</p>
+                  <p>By simulating exactly how components react under historical stress, the Offline Pro software can now generate significantly tighter confidence margins, saving engineers hours of manual spreadsheet work.</p>
+              `
+          },
+          'commercial-deals': {
+              category: 'Sales Strategy',
+              title: 'Closing Commercial Deals with Engineering Data',
+              date: 'Dec 18, 2024',
+              readTime: '6 min read',
+              content: `
+                  <p>In the commercial and industrial (C&I) solar sector, clients are increasingly sophisticated. You are no longer just pitching to a facility manager; you are presenting to internal engineering teams and CFOs who will scrutinize every ROI projection and expected yield assumption.</p>
+                  <p>Relying on basic, overly optimistic sales software often leads to lost deals when the client's internal team reviews the data. To win commercial contracts, transparency and engineering rigor are your greatest assets.</p>
+                  <p>By utilizing Solar Metrix's white-labeled PDF reports, your sales and design teams can hand over bankable, highly transparent data directly branded with your company's logo. Demonstrating an explicit understanding of wiring (ohmic) losses, thermal clipping limits, and detailed P90 risk assessments builds immediate trust.</p>
+                  <p>When you stop selling "estimated savings" and start presenting "verified thermodynamic yield probabilities," you shift the conversation from a sales pitch to an infrastructural investment, dramatically increasing your commercial close rates.</p>
+              `
           }
+      };
+
+      const articleModal = document.getElementById('articleModal');
+
+      function openArticle(articleId) {
+          const data = articleData[articleId];
+          if(!data) return;
+
+          // Populate the modal
+          document.getElementById('article-category').innerText = data.category;
+          document.getElementById('article-title').innerText = data.title;
+          document.getElementById('article-date').innerText = data.date;
+          document.getElementById('article-read-time').innerText = data.readTime;
+          document.getElementById('article-content').innerHTML = data.content;
+
+          // Show the modal
+          articleModal.classList.remove('hidden');
+          articleModal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
       }
 
-      loadBlogFeed();
+      function closeArticle() {
+          articleModal.classList.add('hidden');
+          articleModal.classList.remove('flex');
+          document.body.style.overflow = 'auto';
+      }
 
-      // Global Escape key listener
+      // Close article modal on background click
+      articleModal.addEventListener('click', (e) => {
+          if (e.target === articleModal) closeArticle();
+      });
+
+      // Global Escape key listener handles both modals
       document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
               if (!modal.classList.contains('hidden')) closeModal();
+              if (!articleModal.classList.contains('hidden')) closeArticle();
           }
       });
   </script>
- 
+  
+  
 </body>
 </html>
