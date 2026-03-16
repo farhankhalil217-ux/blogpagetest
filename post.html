@@ -4,19 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Metrix | Engineering Blog</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
-    <style>
-        /* This tells the website how to style the markdown our AI writes */
-        .prose h1 { @apply text-4xl font-bold mb-6 text-slate-900; }
-        .prose h2 { @apply text-2xl font-bold mt-10 mb-4 text-slate-800; }
-        .prose p { @apply mb-6 text-slate-600 leading-relaxed text-lg; }
-        .prose blockquote { @apply border-l-4 border-blue-500 bg-blue-50 p-6 italic my-8 rounded-r-lg text-slate-700; }
-        .prose img { @apply rounded-xl shadow-lg my-8 w-full object-cover; }
-        .prose ul { @apply list-disc list-inside mb-6 text-slate-600 space-y-2; }
-        .prose a { @apply text-blue-600 hover:underline font-medium; }
-    </style>
 </head>
 <body class="bg-slate-50 antialiased">
 
@@ -33,7 +24,7 @@
             <p>Loading analysis...</p>
         </div>
 
-        <article id="blog-content" class="prose hidden"></article>
+        <article id="blog-content" class="prose prose-slate lg:prose-lg mx-auto hidden"></article>
 
     </main>
 
@@ -48,7 +39,7 @@
         if (!fileName) {
             loadingDiv.innerHTML = "Error: No article specified.";
         } else {
-            // 2. Fetch the raw Markdown file from the content/blog/ folder
+            // 2. Fetch the raw Markdown file from the posts/ folder
             fetch(`/posts/${fileName}`)
                 .then(response => {
                     if (!response.ok) throw new Error("Article not found.");
